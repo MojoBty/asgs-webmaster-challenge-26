@@ -79,32 +79,32 @@ Takeaways:
 
 Due to our target demographic, we want to create a colorful, fun, and interactive design.
 
-**Typography**
+**Typography:**
 Two fonts were chosen to create visual contrast and personality. A serif italic font is used for the large About tagline to give it an expressive, editorial feel that stands out from the rest of the page. A clean sans-serif font is used everywhere else to keep the interface readable and modern.
 
-**Ambient Confetti**
+**Ambient Confetti:**
 Floating confetti particles drift across the entire page in ASCE blue and gold tones to immediately create a festive, celebratory atmosphere. The particles avoid the navbar, event cards, and footer so they enhance the background without interfering with content. Fewer particles are shown on mobile to keep performance smooth on smaller devices.
 
-**Confetti Burst Interactions**
+**Confetti Burst Interactions:**
 To reward user curiosity and make the site feel alive, three interactions trigger a confetti explosion: clicking the ASCE logo, tapping a past event card, and opening a section in the Details panel. Each burst uses a color palette that matches its context — for example, the food section bursts in warm oranges and yellows, and the prizes section bursts in gold. This makes exploration feel fun and surprising.
 
-**Cursor Trail**
+**Cursor Trail:**
 On desktop, the cursor leaves a trail of small bear paw prints that fade out as you move. This ties into the Bear Garden theme and gives the site a playful, personalized feel that students are likely to share or remember. The cursor itself is also replaced with a bear paw icon to reinforce the theme consistently.
 
-**Hero Carousel**
+**Hero Carousel:**
 A full-page image carousel introduces the event visually before any text. Autoplaying slides with a subtle zoom effect create energy and motion right away, which helps capture attention and set the tone. Manual controls are included for users who want to browse at their own pace.
 
-**Responsive Images**
+**Responsive Images:**
 Different images are shown depending on screen size — portrait posters on desktop where there is vertical space, and wider landscape banners on mobile where horizontal space is more natural. This ensures the images always look intentional and well-framed regardless of device.
 
-**Mobile Navigation**
+**Mobile Navigation:**
 On smaller screens, the full navigation links are collapsed into a hamburger menu to keep the header uncluttered. The menu opens with a smooth animated dropdown so the transition feels polished rather than abrupt.
 
-**Mobile Accordion**
+**Mobile Accordion:**
 On mobile, the Details section collapses into an accordion so users can tap to reveal only the category they care about, rather than scrolling through all four at once. This keeps the mobile layout clean and easy to navigate without removing any content.
 
-**Scroll Reveal Animations**
+**Scroll Reveal Animations:**
 Content sections animate in as the user scrolls down the page. This paces the experience and draws attention to each section as it enters view, rather than presenting everything at once. The About tagline adds a blur effect on entry for extra visual emphasis.
 
-**Scroll-to-Top Button**
+**Scroll-to-Top Button:**
 A button appears after scrolling down far enough to make returning to the top convenient, especially on mobile. It automatically hides near the bottom of the page so it never covers the footer links.
