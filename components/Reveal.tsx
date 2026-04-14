@@ -14,6 +14,8 @@ interface RevealProps {
    * 'fade'    — opacity only, no translate (cards that scroll in fast)
    */
   variant?: 'default' | 'blur' | 'fade'
+  /** IntersectionObserver rootMargin — negative bottom delays trigger until element is further in view */
+  rootMargin?: string
 }
 
 /**
@@ -25,6 +27,7 @@ export default function Reveal({
   className,
   delay = 0,
   variant = 'default',
+  rootMargin = '0px 0px 60px 0px',
 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -39,7 +42,7 @@ export default function Reveal({
           observer.disconnect()
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px 60px 0px' }
+      { threshold: 0.05, rootMargin }
     )
 
     observer.observe(el)

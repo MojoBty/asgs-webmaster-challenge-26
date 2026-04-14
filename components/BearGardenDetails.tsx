@@ -61,7 +61,7 @@ export default function BearGardenDetails() {
       {/* ── Desktop 2×2 grid (hidden on mobile) ── */}
       <div className="hidden md:grid grid-cols-2 gap-x-16 lg:gap-x-[120px] gap-y-14">
         {DETAILS.map((item, i) => (
-          <Reveal key={item.id} delay={i * 80}>
+          <Reveal key={item.id} delay={i * 80} rootMargin="0px 0px -80px 0px">
             <div className="group">
               <h3 className="font-heading text-[1.5rem] font-semibold leading-athiti text-primary mb-3 transition-colors duration-200 group-hover:text-primary/70">
                 {item.title}

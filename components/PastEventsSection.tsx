@@ -86,21 +86,21 @@ export default function PastEventsSection() {
       </Reveal>
 
       {/* Bordered container */}
-      <div className="md:border-2 md:border-primary/20 md:rounded-xl md:p-8 lg:p-[54px_48px] lg:rounded-[20px]">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5">
+      <div className="min-[850px]:border-2 min-[850px]:border-primary/20 min-[850px]:rounded-xl min-[850px]:p-8 lg:p-[54px_48px] lg:rounded-[20px]">
+        <div className="grid grid-cols-1 min-[850px]:grid-cols-3 gap-6 min-[850px]:gap-5">
           {EVENTS.map((event, i) => (
-            <Reveal key={event.title} delay={i * 80}>
+            <Reveal key={event.title} delay={i * 80} className="h-full" rootMargin="0px 0px -80px 0px">
                 <article
-                  className="rounded-lg overflow-hidden flex flex-col bg-white cursor-pointer transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(0,88,140,0.12)] active:scale-[0.97] group w-full md:w-[85%] md:mx-auto md:border-2 md:border-border-card md:hover:border-primary/40 md:active:border-primary/50 touch-pan-y"
+                  className="h-full rounded-lg overflow-hidden flex flex-col bg-white cursor-pointer transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(0,88,140,0.12)] active:scale-[0.97] group w-full min-[850px]:w-[85%] min-[850px]:mx-auto min-[850px]:border-2 min-[850px]:border-border-card min-[850px]:hover:border-primary/40 min-[850px]:active:border-primary/50 touch-pan-y"
                   onMouseEnter={e => handleEnter(e, i, event.palette)}
                   onMouseLeave={handleLeave}
                   onClick={e => handleClick(e, i, event.palette)}
                 >
                   {/* Card image — fixed aspect ratio so all cards align in a row */}
-                  <div className="w-full overflow-hidden flex-shrink-0 aspect-video md:aspect-[3/4]">
+                  <div className="w-full overflow-hidden flex-shrink-0 aspect-video min-[850px]:aspect-[3/4]">
                     <picture>
-                      {/* Landscape banner on mobile (single column) */}
-                      <source media="(max-width: 767px)" srcSet={event.mobileSrc} />
+                      {/* Landscape banner on mobile (single column, below 850px) */}
+                      <source media="(max-width: 849px)" srcSet={event.mobileSrc} />
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={event.src}
@@ -112,19 +112,19 @@ export default function PastEventsSection() {
                   </div>
 
                   {/* Card body */}
-                  <div className="px-5 py-4 flex flex-col gap-2 flex-1">
-                    {/* Event name */}
-                    <h3 className="font-body text-[1rem] font-medium leading-snug text-text-dark text-center transition-colors duration-300 group-hover:text-primary">
-                      {event.title}
-                    </h3>
+                  <div className="px-5 py-4 flex flex-col justify-between flex-1">
+                    {/* Title + date pinned to top */}
+                    <div className="flex flex-col gap-1.5">
+                      <h3 className="font-body text-[1rem] font-medium leading-snug text-text-dark text-center transition-colors duration-300 group-hover:text-primary h-[2.75rem] line-clamp-2">
+                        {event.title}
+                      </h3>
+                      <p className="font-body text-[0.875rem] font-light leading-poppins text-accent text-center">
+                        {event.date}
+                      </p>
+                    </div>
 
-                    {/* Date — Poppins Light */}
-                    <p className="font-body text-[0.875rem] font-light leading-poppins text-accent text-center">
-                      {event.date}
-                    </p>
-
-                    {/* Description — Poppins Regular 13px */}
-                    <p className="font-body text-[0.875rem] font-normal leading-poppins text-text-body text-center tracking-[-0.01em]">
+                    {/* Description pinned to bottom */}
+                    <p className="font-body text-[0.875rem] font-normal leading-poppins text-text-body text-center tracking-[-0.01em] pt-2">
                       {event.desc}
                     </p>
                   </div>
