@@ -4,7 +4,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="pt-[80px] pb-[50px] px-5 md:pt-[120px] md:pb-[80px] md:px-[72px] lg:pt-[140px] lg:pb-[100px] lg:px-[120px] text-center bg-bg-warm scroll-mt-[60px] md:scroll-mt-[72px] lg:scroll-mt-[84px]"
+      className="pt-[80px] pb-[50px] px-5 md:pt-[120px] md:pb-[80px] md:px-[72px] lg:pt-[140px] lg:pb-[100px] lg:px-[120px] text-center bg-bg-warm md:scroll-mt-[72px] lg:scroll-mt-[84px]"
     >
       <div className="max-w-[1200px] mx-auto">
         <h2 className="sr-only">About Bear Garden</h2>

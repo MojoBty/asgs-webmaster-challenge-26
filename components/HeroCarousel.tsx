@@ -87,7 +87,7 @@ export default function HeroCarousel() {
 
   return (
     // Offset below fixed navbar
-    <section id="home" className="pt-[60px] md:pt-[72px] lg:pt-[84px]">
+    <section id="home" className="md:pt-[72px] lg:pt-[84px]">
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden select-none focus-visible:outline-none"

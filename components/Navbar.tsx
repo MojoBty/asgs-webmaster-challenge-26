@@ -99,7 +99,7 @@ export default function Navbar() {
       aria-label="Main navigation"
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-[200] bg-primary transition-shadow duration-[250ms]',
+        'relative md:fixed md:top-0 md:left-0 md:right-0 z-[200] bg-primary transition-shadow duration-[250ms]',
         isScrolled && 'shadow-[0_2px_24px_rgba(0,0,0,0.25)]'
       )}
     >
@@ -164,7 +164,7 @@ export default function Navbar() {
         id="mobile-menu"
         role="list"
         className={cn(
-          'md:hidden fixed top-[60px] left-0 right-0 bg-primary flex flex-col',
+          'md:hidden absolute top-full left-0 right-0 bg-primary flex flex-col',
           'z-[199] shadow-[0_8px_24px_rgba(0,0,0,0.25)]',
           'transition-[transform,opacity] duration-[380ms] ease-in-out',
           isOpen

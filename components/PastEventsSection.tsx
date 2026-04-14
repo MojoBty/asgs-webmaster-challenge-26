@@ -75,7 +75,7 @@ export default function PastEventsSection() {
   return (
     <section
       id="events"
-      className="py-[60px] md:py-[80px] bg-bg-warm scroll-mt-[60px] md:scroll-mt-[72px] lg:scroll-mt-[84px]"
+      className="py-[60px] md:py-[80px] bg-bg-warm md:scroll-mt-[72px] lg:scroll-mt-[84px]"
     >
       <div className="max-w-[1440px] mx-auto px-5 md:px-12 lg:px-[80px]">
       {/* Section heading */}

@@ -110,6 +110,7 @@ export default function ParticleCanvas() {
     if (!ctx) return
 
     const isMobile = window.matchMedia('(max-width: 767px)').matches
+    if (isMobile) return   // no confetti on mobile
 
     const ambient:  BaseParticle[]     = []
     const confetti: ConfettiParticle[] = []
