@@ -52,6 +52,9 @@
 
   body {
     @apply font-body text-text-dark bg-white overflow-x-hidden;
+    /* Push content inward so it never slides under landscape safe-area overlays */
+    padding-left:  env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 36 36'%3E%3Ccircle cx='6' cy='15' r='5.5' fill='white'/%3E%3Ccircle cx='13' cy='9' r='5.5' fill='white'/%3E%3Ccircle cx='23' cy='9' r='5.5' fill='white'/%3E%3Ccircle cx='30' cy='15' r='5.5' fill='white'/%3E%3Cellipse cx='18' cy='25' rx='11' ry='9.5' fill='white'/%3E%3Ccircle cx='6' cy='15' r='4' fill='%2300588c'/%3E%3Ccircle cx='13' cy='9' r='4' fill='%2300588c'/%3E%3Ccircle cx='23' cy='9' r='4' fill='%2300588c'/%3E%3Ccircle cx='30' cy='15' r='4' fill='%2300588c'/%3E%3Cellipse cx='18' cy='25' rx='9.5' ry='8' fill='%2300588c'/%3E%3C/svg%3E") 13 18, auto;
   }
 

@@ -65,7 +65,14 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${athiti.variable} ${spectral.variable}`}
     >
-      <body className="font-body">{children}</body>
+      <body className="font-body">
+        {/* Safe-area fills — cover notch/home-indicator/side-bars with brand color */}
+        <div aria-hidden style={{ position:'fixed', top:0, left:0, right:0, height:'env(safe-area-inset-top)', background:'#00588c', zIndex:9999 }} />
+        <div aria-hidden style={{ position:'fixed', bottom:0, left:0, right:0, height:'env(safe-area-inset-bottom)', background:'#00588c', zIndex:9999 }} />
+        <div aria-hidden style={{ position:'fixed', top:0, bottom:0, left:0, width:'env(safe-area-inset-left)', background:'#00588c', zIndex:9999 }} />
+        <div aria-hidden style={{ position:'fixed', top:0, bottom:0, right:0, width:'env(safe-area-inset-right)', background:'#00588c', zIndex:9999 }} />
+        {children}
+      </body>
     </html>
   )
 }
