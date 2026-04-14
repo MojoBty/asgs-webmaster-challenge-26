@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  env: {
+    NEXT_PUBLIC_BASE_PATH: '/asgs-webmaster-challenge-26',
+  },
 
   images: {
     unoptimized: true,

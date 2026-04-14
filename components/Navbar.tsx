@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import basePath from '@/lib/basePath'
 
 const NAV_LINKS = [
   { label: 'Home',    href: '#home',    id: 'home' },
@@ -113,7 +114,7 @@ export default function Navbar() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/ASCE_logo_full_white.png"
+            src={`${basePath}/images/ASCE_logo_full_white.png`}
             alt="ASCE at UC San Diego"
             className="h-20 md:h-24 lg:h-28 w-auto"
           />

@@ -3,22 +3,23 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import basePath from '@/lib/basePath'
 
 // ─── Slide data ────────────────────────────────────────────────────────────
 const SLIDES = [
   {
-    src:       '/images/hero1.jpg',
-    mobileSrc: '/images/pastevents1.jpg',
+    src:       `${basePath}/images/hero1.jpg`,
+    mobileSrc: `${basePath}/images/pastevents1.jpg`,
     alt: 'ASCE Bear Garden Fall 2025 — ASCE Bear, Where Are You?',
   },
   {
-    src:       '/images/hero2.jpg',
-    mobileSrc: '/images/pastevents2.jpg',
+    src:       `${basePath}/images/hero2.jpg`,
+    mobileSrc: `${basePath}/images/pastevents2.jpg`,
     alt: 'Bear Garden Winter 2026 — The Rise of ASCE Bear',
   },
   {
-    src:       '/images/hero3.png',
-    mobileSrc: '/images/pastevents3.png',
+    src:       `${basePath}/images/hero3.png`,
+    mobileSrc: `${basePath}/images/pastevents3.png`,
     alt: 'Bear Garden Spring 2026 — My Little ASCE Bear',
   },
 ]

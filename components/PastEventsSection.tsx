@@ -2,11 +2,12 @@
 
 import { useRef } from 'react'
 import Reveal from '@/components/Reveal'
+import basePath from '@/lib/basePath'
 
 const EVENTS = [
   {
-    src:       '/images/pastevents1.jpg',
-    mobileSrc: '/images/hero1.jpg',
+    src:       `${basePath}/images/pastevents1.jpg`,
+    mobileSrc: `${basePath}/images/hero1.jpg`,
     alt:     'ASCE-Bear, Where Are You? event poster — Fall 2025',
     title:   'ASCE-Bear, Where Are You?',
     date:    'November 21, 2025',
@@ -15,8 +16,8 @@ const EVENTS = [
     palette: ['#b5730f', '#f0a030', '#e8c050', '#c47020', '#ffd040'],
   },
   {
-    src:       '/images/pastevents2.jpg',
-    mobileSrc: '/images/hero2.jpg',
+    src:       `${basePath}/images/pastevents2.jpg`,
+    mobileSrc: `${basePath}/images/hero2.jpg`,
     alt:     'The Rise of ASCE Bear event poster — Winter 2026',
     title:   'The Rise of ASCE Bear',
     date:    'February 20, 2026',
@@ -25,8 +26,8 @@ const EVENTS = [
     palette: ['#00588c', '#3a8ec0', '#6ab4e0', '#90cce8', '#c8eaf8'],
   },
   {
-    src:       '/images/pastevents3.png',
-    mobileSrc: '/images/hero3.png',
+    src:       `${basePath}/images/pastevents3.png`,
+    mobileSrc: `${basePath}/images/hero3.png`,
     alt:     'My Little ASCE Bear event poster — Spring 2026',
     title:   'My Little ASCE Bear',
     date:    'April 3, 2026',
