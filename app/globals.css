@@ -133,6 +133,23 @@
 }
 
 /* ---------------------------------------------------------------
+   TOUCH DEVICES — simplify reveal to pure fade (no slide-up).
+   The translateY movement looks jittery while actively scrolling
+   on touch; a clean fade is smoother and avoids the white-flash
+   that occurs when a card enters view before the animation fires.
+--------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  .reveal {
+    transform: none;
+    transition: opacity 450ms var(--ease-out-expo);
+  }
+
+  .reveal.is-visible {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------
    LANDSCAPE MOBILE
    Rotated phone (~390 × 844 → 844 × 390): trim vertical padding so
    sections don't require excessive scrolling. The !important overrides
