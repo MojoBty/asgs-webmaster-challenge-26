@@ -128,7 +128,7 @@
    sections don't require excessive scrolling. The !important overrides
    the Tailwind utilities that are set for portrait-first sizing.
 --------------------------------------------------------------- */
-@media (max-width: 767px) and (orientation: landscape) {
+@media (orientation: landscape) and (max-height: 450px) {
   #home,
   #about,
   #details,

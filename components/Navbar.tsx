@@ -32,11 +32,9 @@ export default function Navbar() {
       .map(l => document.getElementById(l.id))
       .filter((el): el is HTMLElement => el !== null)
 
-    // Navbar height at current breakpoint (matches the h-[52/60/70px] in JSX)
+    // Navbar is only fixed at lg (1024px+); below that it scrolls with content
     function navbarHeight() {
-      if (window.innerWidth >= 1024) return 84
-      if (window.innerWidth >= 768)  return 72
-      return 60
+      return window.innerWidth >= 1024 ? 84 : 0
     }
 
     function update() {
@@ -86,7 +84,7 @@ export default function Navbar() {
     window.dispatchEvent(new CustomEvent('beargardenconfetti', {
       detail: {
         x:       rect.left + rect.width  / 2,
-        y:       (window.innerWidth >= 1024 ? 84 : window.innerWidth >= 768 ? 72 : 60) + 10,
+        y:       (window.innerWidth >= 1024 ? 84 : 60) + 10,
         palette: ['#00588c', '#3a8ec0', '#6ab4e0', '#90cce8', '#c8eaf8', '#ffffff'],
         count:   60,
       },
@@ -99,12 +97,12 @@ export default function Navbar() {
       aria-label="Main navigation"
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
       className={cn(
-        'relative md:fixed md:top-0 md:left-0 md:right-0 z-[200] bg-primary transition-shadow duration-[250ms]',
+        'relative lg:fixed lg:top-0 lg:left-0 lg:right-0 z-[200] bg-primary transition-shadow duration-[250ms]',
         isScrolled && 'shadow-[0_2px_24px_rgba(0,0,0,0.25)]'
       )}
     >
       {/* ── Main bar ── */}
-      <div className="flex items-center justify-between h-[60px] md:h-[72px] lg:h-[84px] px-5 md:px-8 lg:px-[50px] max-w-[1440px] mx-auto">
+      <div className="flex items-center justify-between h-[60px] lg:h-[84px] px-5 md:px-8 lg:px-[50px] max-w-[1440px] mx-auto">
 
         {/* Logo */}
         <a
@@ -117,12 +115,12 @@ export default function Navbar() {
           <img
             src={`${basePath}/images/ASCE_logo_full_white.png`}
             alt="ASCE at UC San Diego"
-            className="h-20 md:h-24 lg:h-28 w-auto"
+            className="h-20 lg:h-28 w-auto"
           />
         </a>
 
-        {/* Desktop nav links — hidden on mobile */}
-        <ul className="hidden md:flex gap-11 items-center" role="list">
+        {/* Desktop nav links — hidden below lg */}
+        <ul className="hidden lg:flex gap-11 items-center" role="list">
           {NAV_LINKS.map(({ label, href, id }) => (
             <li key={href}>
               <a
@@ -144,9 +142,9 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Hamburger — visible only on mobile */}
+        {/* Hamburger — visible below lg (phones in portrait and landscape) */}
         <button
-          className="flex md:hidden w-9 h-9 items-center justify-center bg-transparent border-none cursor-pointer z-[201] transition-transform duration-150 hover:scale-110 active:scale-95"
+          className="flex lg:hidden w-9 h-9 items-center justify-center bg-transparent border-none cursor-pointer z-[201] transition-transform duration-150 hover:scale-110 active:scale-95"
           aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
@@ -164,7 +162,7 @@ export default function Navbar() {
         id="mobile-menu"
         role="list"
         className={cn(
-          'md:hidden absolute top-full left-0 right-0 bg-primary flex flex-col',
+          'lg:hidden absolute top-full left-0 right-0 bg-primary flex flex-col',
           'z-[199] shadow-[0_8px_24px_rgba(0,0,0,0.25)]',
           'transition-[transform,opacity] duration-[380ms] ease-in-out',
           isOpen

@@ -55,7 +55,7 @@ export default function BearGardenDetails() {
   return (
     <section
       id="details"
-      className="pt-[50px] pb-[100px] md:pt-[80px] md:pb-[140px] lg:pt-[80px] lg:pb-[160px] bg-bg-warm md:scroll-mt-[72px] lg:scroll-mt-[84px]"
+      className="pt-[50px] pb-[100px] md:pt-[80px] md:pb-[140px] lg:pt-[80px] lg:pb-[160px] bg-bg-warm lg:scroll-mt-[84px]"
     >
       <div className="max-w-[1440px] mx-auto px-5 md:px-12 lg:px-[80px]">
       {/* ── Desktop 2×2 grid (hidden on mobile) ── */}

@@ -75,7 +75,7 @@ export default function PastEventsSection() {
   return (
     <section
       id="events"
-      className="py-[60px] md:py-[80px] bg-bg-warm md:scroll-mt-[72px] lg:scroll-mt-[84px]"
+      className="py-[60px] md:py-[80px] bg-bg-warm lg:scroll-mt-[84px]"
     >
       <div className="max-w-[1440px] mx-auto px-5 md:px-12 lg:px-[80px]">
       {/* Section heading */}
@@ -97,17 +97,17 @@ export default function PastEventsSection() {
                   onMouseLeave={handleLeave}
                   onClick={e => handleClick(e, i, event.palette)}
                 >
-                  {/* Card image — zoom on hover; landscape banner on mobile, portrait poster on md+ */}
-                  <div className="w-full overflow-hidden flex-shrink-0">
+                  {/* Card image — fixed aspect ratio so all cards align in a row */}
+                  <div className="w-full overflow-hidden flex-shrink-0 aspect-video md:aspect-[3/4]">
                     <picture>
-                      {/* Landscape banner fits the constrained card thumbnail on mobile */}
+                      {/* Landscape banner on mobile (single column) */}
                       <source media="(max-width: 767px)" srcSet={event.mobileSrc} />
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={event.src}
                         alt={event.alt}
                         loading="lazy"
-                        className="w-full h-auto block transition-transform duration-500 ease-out group-hover:scale-105"
+                        className="w-full h-full object-cover block transition-transform duration-500 ease-out group-hover:scale-105"
                       />
                     </picture>
                   </div>
