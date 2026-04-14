@@ -37,6 +37,11 @@
     }
   }
 
+  /* Fill notch / rubber-band overscroll areas with the navbar/footer color */
+  html {
+    background-color: #00588c;
+  }
+
   *,
   *::before,
   *::after {

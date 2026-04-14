@@ -7,7 +7,7 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary">
+    <footer className="bg-primary" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="flex flex-col items-center gap-5 text-center md:flex-row md:justify-between md:text-left md:gap-0 w-full py-10 md:py-12 px-5 md:px-12 lg:px-[80px] max-w-[1440px] mx-auto">
 
         {/* Credit */}
