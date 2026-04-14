@@ -28,12 +28,12 @@ export default function ScrollToTop() {
         'w-11 h-11 rounded-full bg-primary text-white',
         'flex items-center justify-center',
         'shadow-[0_4px_16px_rgba(0,88,140,0.4)]',
-        'transition-[transform,opacity,box-shadow] duration-700',
+        'transition-[transform,opacity,box-shadow] duration-[1100ms]',
         'hover:scale-110 hover:shadow-[0_6px_24px_rgba(0,88,140,0.5)] hover:-translate-y-0.5',
         'active:scale-95',
         'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-primary focus-visible:outline-offset-2',
         visible
-          ? 'opacity-100 translate-y-0 pointer-events-auto animate-fade-up'
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 translate-y-3 pointer-events-none'
       )}
     >

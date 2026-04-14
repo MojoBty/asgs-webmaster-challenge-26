@@ -129,7 +129,7 @@
    the Tailwind utilities that are set for portrait-first sizing.
 --------------------------------------------------------------- */
 @media (orientation: landscape) and (max-height: 450px) {
-  #home,
+  /* Skip #home — hero has no background so padding-top shows the body color behind it */
   #about,
   #details,
   #events {
