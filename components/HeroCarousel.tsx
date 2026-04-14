@@ -135,7 +135,9 @@ export default function HeroCarousel() {
                 )}
               >
                 <picture>
-                  {/* Portrait poster on mobile, landscape banner on md+ */}
+                  {/* Landscape phone: wide banner fits without stretching */}
+                  <source media="(max-width: 767px) and (orientation: landscape)" srcSet={slide.src} />
+                  {/* Portrait phone: tall poster fills the frame nicely */}
                   <source media="(max-width: 767px)" srcSet={slide.mobileSrc} />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

@@ -51,7 +51,9 @@
   }
 
   body {
-    @apply font-body text-text-dark bg-white overflow-x-hidden;
+    @apply font-body text-text-dark overflow-x-hidden;
+    /* Primary fills all safe-area gaps — matches navbar and footer seamlessly */
+    background-color: #00588c;
     /* Push content inward so it never slides under landscape safe-area overlays */
     padding-left:  env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
@@ -117,6 +119,22 @@
   /* Carousel Ken Burns */
   .animate-slide-enter {
     animation: slide-enter 900ms var(--ease-out-expo) both;
+  }
+}
+
+/* ---------------------------------------------------------------
+   LANDSCAPE MOBILE
+   Rotated phone (~390 × 844 → 844 × 390): trim vertical padding so
+   sections don't require excessive scrolling. The !important overrides
+   the Tailwind utilities that are set for portrait-first sizing.
+--------------------------------------------------------------- */
+@media (max-width: 767px) and (orientation: landscape) {
+  #home,
+  #about,
+  #details,
+  #events {
+    padding-top:    28px !important;
+    padding-bottom: 28px !important;
   }
 }
 
