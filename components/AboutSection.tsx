@@ -8,9 +8,9 @@ export default function AboutSection() {
     >
       <div className="max-w-[1200px] mx-auto">
         <h2 className="sr-only">About Bear Garden</h2>
-        {/* Large tagline — Spectral Italic, blur reveal */}
+        {/* Large tagline — Athiti, blur reveal */}
         <Reveal variant="blur">
-          <p className="font-display italic text-[1.75rem] md:text-[1.75rem] lg:text-[1.875rem] font-normal leading-[1.35] text-text-dark mb-8 md:mb-10 lg:mb-16">
+          <p className="font-heading text-[1.75rem] md:text-[1.75rem] lg:text-[1.875rem] font-normal leading-[1.35] text-text-dark mb-8 md:mb-10 lg:mb-16">
             Bear Gardens are daytime carnivals where students can chill with free
             food and play games to win some bear-y cool prizes with our mascot,
             ASCE Bear.
