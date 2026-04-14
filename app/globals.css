@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   EASING TOKENS
+--------------------------------------------------------------- */
+:root {
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ---------------------------------------------------------------
+   KEYFRAMES
+--------------------------------------------------------------- */
+
+/* Carousel: subtle Ken Burns zoom-out as a new slide enters */
+@keyframes slide-enter {
+  from {
+    opacity: 0.82;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------
+   BASE
+--------------------------------------------------------------- */
+@layer base {
+  /* Only smooth-scroll when the user hasn't asked for reduced motion */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply font-body text-text-dark bg-white overflow-x-hidden;
+    cursor: url('/images/bear-paw-cursor.svg') 13 18, auto;
+  }
+
+  a, button, [role="button"], label[for], select, input[type="checkbox"], input[type="radio"] {
+    cursor: url('/images/bear-paw-cursor.svg') 18 25, pointer;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   SCROLL REVEAL
+   Elements with .reveal fade+slide in when entering the viewport.
+   JavaScript adds .is-visible once the IntersectionObserver fires.
+--------------------------------------------------------------- */
+@layer utilities {
+  /* Standard reveal — fade + slide up */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity    700ms var(--ease-out-expo),
+      transform  700ms var(--ease-out-expo);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Display reveal — adds blur for large Playfair Display text */
+  .reveal-blur {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(6px);
+    transition:
+      opacity    900ms var(--ease-out-expo),
+      transform  900ms var(--ease-out-expo),
+      filter     900ms var(--ease-out-expo);
+  }
+
+  .reveal-blur.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  /* Carousel Ken Burns */
+  .animate-slide-enter {
+    animation: slide-enter 900ms var(--ease-out-expo) both;
+  }
+}
+
+/* ---------------------------------------------------------------
+   REDUCED MOTION — disable all animations and transitions
+--------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-blur {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
