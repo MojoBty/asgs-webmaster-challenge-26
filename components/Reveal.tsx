@@ -11,8 +11,9 @@ interface RevealProps {
   /**
    * 'default' — fade + slide up (standard sections)
    * 'blur'    — fade + slide up + blur-in (large display text)
+   * 'fade'    — opacity only, no translate (cards that scroll in fast)
    */
-  variant?: 'default' | 'blur'
+  variant?: 'default' | 'blur' | 'fade'
 }
 
 /**
@@ -38,7 +39,7 @@ export default function Reveal({
           observer.disconnect()
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px 120px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px 350px 0px' }
     )
 
     observer.observe(el)
@@ -48,7 +49,10 @@ export default function Reveal({
   return (
     <div
       ref={ref}
-      className={cn(variant === 'blur' ? 'reveal-blur' : 'reveal', className)}
+      className={cn(
+        variant === 'blur' ? 'reveal-blur' : variant === 'fade' ? 'reveal-fade' : 'reveal',
+        className
+      )}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

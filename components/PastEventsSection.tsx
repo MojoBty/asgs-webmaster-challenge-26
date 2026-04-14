@@ -89,7 +89,7 @@ export default function PastEventsSection() {
       <div className="md:border-2 md:border-primary/20 md:rounded-xl md:p-8 lg:p-[54px_48px] lg:rounded-[20px]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5">
           {EVENTS.map((event, i) => (
-            <Reveal key={event.title} delay={i * 100}>
+            <Reveal key={event.title} variant="fade" delay={i * 80}>
                 <article
                   className="rounded-lg overflow-hidden flex flex-col bg-white cursor-pointer transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(0,88,140,0.12)] active:scale-[0.97] group w-full md:w-[85%] md:mx-auto md:border-2 md:border-border-card md:hover:border-primary/40 md:active:border-primary/50 touch-pan-y"
                   onMouseEnter={e => handleEnter(e, i, event.palette)}

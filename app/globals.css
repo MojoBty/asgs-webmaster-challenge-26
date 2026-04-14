@@ -116,6 +116,16 @@
     filter: blur(0);
   }
 
+  /* Pure fade — no slide, for cards that enter the viewport quickly */
+  .reveal-fade {
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out-expo);
+  }
+
+  .reveal-fade.is-visible {
+    opacity: 1;
+  }
+
   /* Carousel Ken Burns */
   .animate-slide-enter {
     animation: slide-enter 900ms var(--ease-out-expo) both;
@@ -143,7 +153,8 @@
 --------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
-  .reveal-blur {
+  .reveal-blur,
+  .reveal-fade {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
