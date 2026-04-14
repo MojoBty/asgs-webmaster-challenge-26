@@ -44,6 +44,8 @@ export default function CursorTrail() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+    // ctx is non-null from here — assert so TypeScript doesn't complain inside closures
+    const safeCtx = ctx as CanvasRenderingContext2D
 
     let cssW = window.innerWidth
     let cssH = window.innerHeight
@@ -69,7 +71,7 @@ export default function CursorTrail() {
     }
 
     function tick() {
-      ctx.clearRect(0, 0, cssW, cssH)
+      safeCtx.clearRect(0, 0, cssW, cssH)
 
       // Spawn sparks only when the cursor has moved enough
       const dx = mouseX - lastX
@@ -102,13 +104,13 @@ export default function CursorTrail() {
         s.life -= s.decay
         if (s.life <= 0) { sparks.splice(i, 1); continue }
 
-        ctx.save()
-        ctx.globalAlpha = Math.max(0, s.life) * 0.85
-        ctx.fillStyle   = s.color
-        ctx.translate(s.x, s.y)
-        ctx.rotate(s.rotation)
-        drawPaw(ctx, s.size * (s.life * 0.6 + 0.4))
-        ctx.restore()
+        safeCtx.save()
+        safeCtx.globalAlpha = Math.max(0, s.life) * 0.85
+        safeCtx.fillStyle   = s.color
+        safeCtx.translate(s.x, s.y)
+        safeCtx.rotate(s.rotation)
+        drawPaw(safeCtx, s.size * (s.life * 0.6 + 0.4))
+        safeCtx.restore()
       }
 
       rafId = requestAnimationFrame(tick)

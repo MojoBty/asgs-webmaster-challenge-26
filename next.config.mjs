@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+
   images: {
+    unoptimized: true,
+
     remotePatterns: [
       {
         protocol: 'https',
@@ -9,6 +13,9 @@ const nextConfig = {
       },
     ],
   },
+
+  basePath: '/asgs-webmaster-challenge-26',
+  assetPrefix: '/asgs-webmaster-challenge-26/',
 }
 
 export default nextConfig
