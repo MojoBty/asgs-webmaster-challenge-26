@@ -121,32 +121,34 @@ export default function HeroCarousel() {
           {SLIDES.map((slide, i) => (
             <div
               key={i}
-              className="min-w-full relative"
+              className="min-w-full relative bg-primary"
               role="group"
               aria-roledescription="slide"
               aria-label={`Slide ${i + 1} of ${TOTAL}${i === current ? ' (current)' : ''}`}
             >
-              <picture
-                // Key changes when this slide becomes active → remounts → animation replays
-                key={i === current ? `active-${current}` : `inactive-${i}`}
+              {/* Wrapper key remounts to replay Ken Burns — picture stays stable inside */}
+              <div
+                key={i === current ? `anim-${current}` : `static-${i}`}
                 className={cn(
                   'w-full block pointer-events-none',
                   i === current && !reducedMotion && 'animate-slide-enter'
                 )}
               >
-                {/* Portrait poster on mobile, landscape banner on md+ */}
-                <source media="(max-width: 767px)" srcSet={slide.mobileSrc} />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={slide.src}
-                  alt={slide.alt}
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore — fetchPriority is valid HTML but not yet in React's types
-                  fetchPriority={i === 0 ? 'high' : undefined}
-                  className="w-full h-auto block"
-                />
-              </picture>
+                <picture>
+                  {/* Portrait poster on mobile, landscape banner on md+ */}
+                  <source media="(max-width: 767px)" srcSet={slide.mobileSrc} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    loading="eager"
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore — fetchPriority is valid HTML but not yet in React's types
+                    fetchPriority={i === 0 ? 'high' : 'low'}
+                    className="w-full h-auto block"
+                  />
+                </picture>
+              </div>
             </div>
           ))}
         </div>

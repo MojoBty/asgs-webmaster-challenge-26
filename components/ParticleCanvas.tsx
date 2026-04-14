@@ -40,6 +40,7 @@ const AMBIENT_COLORS = [
 ]
 
 const AMBIENT_COUNT      = 220
+const AMBIENT_COUNT_MOB  = 60
 const CONFETTI_PER_BURST = 120
 const GRAVITY            = 0.22
 const AIR                = 0.989
@@ -108,11 +109,15 @@ export default function ParticleCanvas() {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
     if (!ctx) return
 
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+
     const ambient:  BaseParticle[]     = []
     const confetti: ConfettiParticle[] = []
     let rafId   = 0
     let cssW    = 0
     let cssH    = 0
+    let lastTime = 0
+    const FRAME_MS = isMobile ? 1000 / 30 : 0   // 30fps cap on mobile, uncapped on desktop
     // Navbar height at current breakpoint — used to keep ambient out of the fixed bar
     let navbarH = 60
 
@@ -148,17 +153,25 @@ export default function ParticleCanvas() {
 
     // ── Resize ───────────────────────────────────────────────────────────────
     function resize() {
-      cssW    = window.innerWidth
-      cssH    = window.innerHeight
+      const newW = window.innerWidth
+      const newH = window.innerHeight
+      const widthChanged = newW !== cssW
+
+      cssW = newW
+      cssH = newH
       navbarH = cssW >= 1024 ? 84 : cssW >= 768 ? 72 : 60
       canvas.width  = cssW
       canvas.height = cssH
 
-      ambient.length = 0
-      const docH  = document.body.scrollHeight
-      const count = cssW < 768 ? 110 : AMBIENT_COUNT
-      for (let i = 0; i < count; i++) {
-        ambient.push(spawnAmbient(cssW, docH))
+      // Only re-spawn particles on width change — height-only changes are the
+      // mobile browser chrome showing/hiding, which would cause a visible teleport
+      if (widthChanged || ambient.length === 0) {
+        ambient.length = 0
+        const docH  = document.body.scrollHeight
+        const count = cssW < 768 ? AMBIENT_COUNT_MOB : AMBIENT_COUNT
+        for (let i = 0; i < count; i++) {
+          ambient.push(spawnAmbient(cssW, docH))
+        }
       }
 
       buildExclusions()
@@ -178,7 +191,13 @@ export default function ParticleCanvas() {
     }
 
     // ── Animation tick ────────────────────────────────────────────────────────
-    function tick() {
+    function tick(time: number) {
+      if (FRAME_MS > 0 && time - lastTime < FRAME_MS) {
+        rafId = requestAnimationFrame(tick)
+        return
+      }
+      lastTime = time
+
       const scrollY = window.scrollY
       const docH    = document.body.scrollHeight
 
@@ -239,6 +258,7 @@ export default function ParticleCanvas() {
     }
 
     // ── Visibility — pause when tab is hidden ─────────────────────────────────
+
     function onVisibility() {
       if (document.hidden) cancelAnimationFrame(rafId)
       else rafId = requestAnimationFrame(tick)
@@ -251,7 +271,12 @@ export default function ParticleCanvas() {
     window.addEventListener('beargardenconfetti', onConfetti)
     document.addEventListener('visibilitychange', onVisibility)
     // Rebuild exclusions whenever document height changes (e.g. accordion open/close)
-    const ro = new ResizeObserver(buildExclusions)
+    // Debounced so mobile browser-chrome height flicker doesn't thrash layout reads
+    let roTimer = 0
+    const ro = new ResizeObserver(() => {
+      clearTimeout(roTimer)
+      roTimer = window.setTimeout(buildExclusions, 150)
+    })
     ro.observe(document.body)
     rafId = requestAnimationFrame(tick)
 

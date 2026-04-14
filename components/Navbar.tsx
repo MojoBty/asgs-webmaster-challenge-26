@@ -97,6 +97,7 @@ export default function Navbar() {
     <nav
       id="main-nav"
       aria-label="Main navigation"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
       className={cn(
         'fixed top-0 left-0 right-0 z-[200] bg-primary transition-shadow duration-[250ms]',
         isScrolled && 'shadow-[0_2px_24px_rgba(0,0,0,0.25)]'
