@@ -50,17 +50,15 @@ export default function AboutSection() {
     }
 
     // ── Scroll lock / unlock ──────────────────────────────────────────────────
-    // overflow:hidden on <html> kills momentum immediately; scrollTo pins the
-    // exact position so there's nothing to fight against.
+    // Pinning is done via window.scrollTo on every advance() call combined with
+    // e.preventDefault() on touchmove/wheel. overflow:hidden is intentionally
+    // avoided — iOS Safari ignores it for touch scroll.
     const lockAt = (y: number) => {
       lockedYRef.current = y
       window.scrollTo(0, y)
-      document.documentElement.style.overflowY = 'hidden'
     }
 
-    const unlock = () => {
-      document.documentElement.style.overflowY = ''
-    }
+    const unlock = () => { /* nothing to undo */ }
 
     // ── Core advance function ─────────────────────────────────────────────────
     const advance = (delta: number) => {
@@ -87,6 +85,9 @@ export default function AboutSection() {
       }
 
       accRef.current = next
+
+      // Re-pin the page on every tick — primary lock mechanism for iOS Safari
+      window.scrollTo(0, lockedYRef.current)
 
       const wordCount = Math.min(WORDS.length, Math.floor(accRef.current / PX_PER_WORD))
       setVisibleWords(wordCount)
