@@ -139,17 +139,38 @@ export default function AboutSection() {
       }
     }
 
+    // ── Resize / orientation change ───────────────────────────────────────────
+    // Viewport dimensions shift on rotation, which can re-trigger the scroll-up
+    // activation condition with stale lock coordinates. Always unlock immediately
+    // and reset mid-animation state so the animation can re-activate cleanly.
+    let resizeTimer = 0
+    const onResize = () => {
+      unlock()
+      clearTimeout(resizeTimer)
+      resizeTimer = window.setTimeout(() => {
+        if (phaseRef.current === 'active') {
+          phaseRef.current = 'idle'
+          accRef.current   = 0
+          setVisibleWords(0)
+          setShowExpl(false)
+        }
+      }, 250)
+    }
+
     window.addEventListener('scroll',     onScroll,     { passive: true })
     window.addEventListener('wheel',      onWheel,      { passive: false })
     window.addEventListener('touchstart', onTouchStart, { passive: true })
     window.addEventListener('touchmove',  onTouchMove,  { passive: false })
+    window.addEventListener('resize',     onResize)
 
     return () => {
       unlock()
+      clearTimeout(resizeTimer)
       window.removeEventListener('scroll',     onScroll)
       window.removeEventListener('wheel',      onWheel)
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove',  onTouchMove)
+      window.removeEventListener('resize',     onResize)
     }
   }, [])
 
