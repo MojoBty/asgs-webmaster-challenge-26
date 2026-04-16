@@ -109,11 +109,46 @@ export default function AboutSection() {
     }
 
     const onTouchMove = (e: TouchEvent) => {
-      if (phaseRef.current !== 'active') return
-      e.preventDefault()
       const dy = touchYRef.current - e.touches[0].clientY
       touchYRef.current = e.touches[0].clientY
-      advance(dy * 2)
+
+      // Already locked — handle normally
+      if (phaseRef.current === 'active') {
+        e.preventDefault()
+        advance(dy * 2)
+        return
+      }
+
+      // Activation checks — touchmove fires before the browser commits the
+      // scroll, so calling e.preventDefault() here stops the page from moving
+      // in the first place (far more reliable than correcting after onScroll).
+      if (suppressToTop || suppressNav) return
+
+      const r    = section.getBoundingClientRect()
+      const navH = getNavH()
+      const vh   = window.innerHeight
+
+      // Swipe DOWN into the section
+      if (phaseRef.current === 'idle' && dy > 0 &&
+          r.top <= navH + 80 && r.bottom > navH + 100) {
+        e.preventDefault()
+        phaseRef.current   = 'active'
+        accRef.current     = 0
+        lockedYRef.current = window.scrollY  // section already in view — no snap
+        advance(dy * 2)
+        return
+      }
+
+      // Swipe UP back into the section from below
+      if (phaseRef.current === 'done' && dy < 0 &&
+          r.bottom > vh - 100 && r.bottom <= vh + 80) {
+        e.preventDefault()
+        phaseRef.current = 'active'
+        accRef.current   = TOTAL_PX
+        lockAt(Math.max(0, section.offsetTop + section.offsetHeight - vh))
+        advance(dy * 2)
+        return
+      }
     }
 
     // ── Activation: section top reaching navbar (scroll down) or
