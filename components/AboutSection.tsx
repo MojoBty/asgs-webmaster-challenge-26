@@ -115,17 +115,19 @@ export default function AboutSection() {
 
     // ── Activation: section top reaching navbar (scroll down) or
     //               section bottom re-entering viewport (scroll up) ────────────
-    // suppressScrollToTop: blocks re-activation while the scroll-to-top button's
-    // smooth scroll is in flight. Clears once scrollY reaches the top.
-    let suppressScrollToTop = false
+    // suppressActivation: blocks re-activation during any programmatic scroll
+    // (scroll-to-top button, nav-link navigation). Timer-based; 2 s covers any
+    // smooth-scroll duration on any device.
+    let suppressActivation = false
     let suppressTimer = 0
+    const setSuppress = (ms: number) => {
+      suppressActivation = true
+      clearTimeout(suppressTimer)
+      suppressTimer = window.setTimeout(() => { suppressActivation = false }, ms)
+    }
 
     const onScroll = () => {
-      // Clear suppression once we've actually reached the top
-      if (suppressScrollToTop) {
-        if (window.scrollY < 10) suppressScrollToTop = false
-        return
-      }
+      if (suppressActivation) return
 
       const r    = section.getBoundingClientRect()
       const navH = getNavH()
@@ -179,9 +181,12 @@ export default function AboutSection() {
     const scrollToTarget = (targetId: string) => {
       const el = document.getElementById(targetId)
       if (!el) return
-      // scrollIntoView can be cancelled on iOS by a preceding window.scrollTo call,
-      // so use window.scrollTo directly. On desktop the navbar is fixed so subtract
-      // its height; on mobile it scrolls with the page so no offset needed.
+      // Suppress re-activation for the duration of the smooth scroll so the
+      // about section passing through the viewport doesn't hijack navigation.
+      setSuppress(2000)
+      // Use window.scrollTo directly (scrollIntoView can be cancelled on iOS
+      // by a preceding window.scrollTo call). On desktop the navbar is fixed
+      // so subtract its height; on mobile it scrolls with the page.
       const offset = window.innerWidth >= 1024 ? getNavH() : 0
       const top    = el.getBoundingClientRect().top + window.scrollY - offset
       window.scrollTo({ top, behavior: 'smooth' })
@@ -246,13 +251,11 @@ export default function AboutSection() {
     // fallback in case the scroll is interrupted before reaching the top.
     const onScrollToTop = () => {
       unlock()
-      phaseRef.current     = 'idle'
-      accRef.current       = 0
-      suppressScrollToTop  = true
+      phaseRef.current = 'idle'
+      accRef.current   = 0
       setVisibleWords(0)
       setShowExpl(false)
-      clearTimeout(suppressTimer)
-      suppressTimer = window.setTimeout(() => { suppressScrollToTop = false }, 2000)
+      setSuppress(2000)
     }
 
     window.addEventListener('scroll',             onScroll,             { passive: true })
