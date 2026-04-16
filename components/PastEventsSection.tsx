@@ -79,7 +79,7 @@ export default function PastEventsSection() {
     >
       <div className="max-w-[1440px] mx-auto px-5 md:px-12 lg:px-[80px]">
       {/* Section heading */}
-      <Reveal>
+      <Reveal rootMargin="0px 0px -180px 0px">
         <h2 className="font-heading text-[2rem] lg:text-[2.5rem] font-semibold leading-athiti text-primary mb-8">
           Past Events
         </h2>
@@ -89,7 +89,7 @@ export default function PastEventsSection() {
       <div className="min-[850px]:border-2 min-[850px]:border-primary/20 min-[850px]:rounded-xl min-[850px]:p-8 lg:p-[54px_48px] lg:rounded-[20px]">
         <div className="grid grid-cols-1 min-[850px]:grid-cols-3 gap-6 min-[850px]:gap-5">
           {EVENTS.map((event, i) => (
-            <Reveal key={event.title} delay={i * 80} className="h-full" rootMargin="0px 0px -80px 0px">
+            <Reveal key={event.title} delay={i * 80} className="h-full" rootMargin="0px 0px -180px 0px">
                 <article
                   className="h-full rounded-lg overflow-hidden flex flex-col bg-white cursor-pointer transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(0,88,140,0.12)] active:scale-[0.97] group w-full min-[850px]:w-[85%] min-[850px]:mx-auto min-[850px]:border-2 min-[850px]:border-border-card min-[850px]:hover:border-primary/40 min-[850px]:active:border-primary/50 touch-pan-y"
                   onMouseEnter={e => handleEnter(e, i, event.palette)}

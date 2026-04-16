@@ -108,3 +108,6 @@ Content sections animate in as the user scrolls down the page. This paces the ex
 
 **Scroll-to-Top Button:**
 A button appears after scrolling down far enough to make returning to the top convenient, especially on mobile. It automatically hides near the bottom of the page so it never covers the footer links.
+
+**About Section Scroll Animation**
+About section header appears progressively as user scrolls/swipes. Helps make the page more interactive and draw user attention to the main bear garden detials.
