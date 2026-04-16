@@ -86,6 +86,13 @@ export default function Navbar() {
       e.preventDefault()
       window.dispatchEvent(new CustomEvent('scrolltotop'))
       window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else if (id === 'about') {
+      e.preventDefault()
+      const about = document.getElementById('about')
+      if (!about) return
+      const offset = window.innerWidth >= 1024 ? 84 : 0
+      const top = about.getBoundingClientRect().top + window.scrollY - offset
+      window.scrollTo({ top, behavior: 'smooth' })
     } else if (BELOW_ABOUT.has(id)) {
       e.preventDefault()
       window.dispatchEvent(new CustomEvent('navigatepastabout', { detail: { targetId: id } }))
