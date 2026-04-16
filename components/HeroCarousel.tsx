@@ -94,14 +94,6 @@ export default function HeroCarousel() {
         aria-label="Bear Garden event highlights"
         aria-roledescription="carousel"
         tabIndex={0}
-        onMouseEnter={stopAutoplay}
-        onMouseLeave={startAutoplay}
-        onFocus={stopAutoplay}
-        onBlur={e => {
-          if (!containerRef.current?.contains(e.relatedTarget as Node)) {
-            startAutoplay()
-          }
-        }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onKeyDown={handleKeyDown}
