@@ -77,6 +77,17 @@ export default function Navbar() {
   const logoRef = useRef<HTMLAnchorElement>(null)
   const close   = () => setIsOpen(false)
 
+  // For sections below "about", prevent the default jump and let AboutSection
+  // auto-play its animation before scrolling to the target.
+  const BELOW_ABOUT = new Set(['events', 'details'])
+  function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, id: string) {
+    close()
+    if (BELOW_ABOUT.has(id)) {
+      e.preventDefault()
+      window.dispatchEvent(new CustomEvent('navigatepastabout', { detail: { targetId: id } }))
+    }
+  }
+
   function handleLogoClick() {
     close()
     if (!logoRef.current) return
@@ -125,6 +136,7 @@ export default function Navbar() {
             <li key={href}>
               <a
                 href={href}
+                onClick={e => handleNavClick(e, id)}
                 className={cn(
                   'relative font-body text-[1rem] font-normal text-white uppercase',
                   'tracking-[-0.01em] leading-poppins pb-[3px]',
@@ -170,11 +182,11 @@ export default function Navbar() {
             : '-translate-y-full opacity-0 pointer-events-none'
         )}
       >
-        {NAV_LINKS.map(({ label, href }, index) => (
+        {NAV_LINKS.map(({ label, href, id }, index) => (
           <li key={href} className="w-full">
             <a
               href={href}
-              onClick={close}
+              onClick={e => handleNavClick(e, id)}
               style={{ transitionDelay: isOpen ? `${index * 55}ms` : '0ms' }}
               className="block font-body text-[1.0625rem] font-normal text-white uppercase px-5 py-3.5 hover:bg-white/10 transition-colors duration-150"
             >

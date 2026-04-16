@@ -174,6 +174,57 @@ export default function AboutSection() {
       }, 250)
     }
 
+    // ── Nav link to section below "about" ────────────────────────────────────
+    // Auto-plays the animation at speed then scrolls to the target section.
+    const onNavigatePastAbout = (e: Event) => {
+      const { targetId } = (e as CustomEvent<{ targetId: string }>).detail
+
+      // If already done, just scroll to target
+      if (phaseRef.current === 'done') {
+        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
+        return
+      }
+
+      // Activate from idle if needed
+      if (phaseRef.current === 'idle') {
+        phaseRef.current = 'active'
+        accRef.current   = 0
+        lockAt(section.offsetTop - getNavH())
+      }
+
+      // rAF loop: animate acc → TOTAL_PX over ~600ms, then navigate
+      const startAcc  = accRef.current
+      const startTime = performance.now()
+      const DURATION  = 600
+
+      const tick = (now: number) => {
+        if (phaseRef.current !== 'active') return
+        const t      = Math.min(1, (now - startTime) / DURATION)
+        const eased  = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+        const newAcc = startAcc + (TOTAL_PX - startAcc) * eased
+
+        accRef.current = newAcc
+        window.scrollTo(0, lockedYRef.current)
+
+        const wordCount = Math.min(WORDS.length, Math.floor(newAcc / PX_PER_WORD))
+        setVisibleWords(wordCount)
+        setShowExpl(newAcc >= WORDS.length * PX_PER_WORD + EXPLANATION_HOLD)
+
+        if (t < 1) {
+          requestAnimationFrame(tick)
+        } else {
+          phaseRef.current = 'done'
+          accRef.current   = TOTAL_PX
+          setVisibleWords(WORDS.length)
+          setShowExpl(true)
+          unlock()
+          document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+
+      requestAnimationFrame(tick)
+    }
+
     // ── Scroll-to-top button ──────────────────────────────────────────────────
     // Reset animation and suppress re-activation for the duration of the smooth
     // scroll. The suppress clears in onScroll once scrollY < 10, with a 2s
@@ -189,23 +240,25 @@ export default function AboutSection() {
       suppressTimer = window.setTimeout(() => { suppressScrollToTop = false }, 2000)
     }
 
-    window.addEventListener('scroll',      onScroll,      { passive: true })
-    window.addEventListener('wheel',       onWheel,       { passive: false })
-    window.addEventListener('touchstart',  onTouchStart,  { passive: true })
-    window.addEventListener('touchmove',   onTouchMove,   { passive: false })
-    window.addEventListener('resize',      onResize)
-    window.addEventListener('scrolltotop', onScrollToTop)
+    window.addEventListener('scroll',             onScroll,             { passive: true })
+    window.addEventListener('wheel',              onWheel,              { passive: false })
+    window.addEventListener('touchstart',         onTouchStart,         { passive: true })
+    window.addEventListener('touchmove',          onTouchMove,          { passive: false })
+    window.addEventListener('resize',             onResize)
+    window.addEventListener('scrolltotop',        onScrollToTop)
+    window.addEventListener('navigatepastabout',  onNavigatePastAbout)
 
     return () => {
       unlock()
       clearTimeout(resizeTimer)
       clearTimeout(suppressTimer)
-      window.removeEventListener('scroll',      onScroll)
-      window.removeEventListener('wheel',       onWheel)
-      window.removeEventListener('touchstart',  onTouchStart)
-      window.removeEventListener('touchmove',   onTouchMove)
-      window.removeEventListener('resize',      onResize)
-      window.removeEventListener('scrolltotop', onScrollToTop)
+      window.removeEventListener('scroll',             onScroll)
+      window.removeEventListener('wheel',              onWheel)
+      window.removeEventListener('touchstart',         onTouchStart)
+      window.removeEventListener('touchmove',          onTouchMove)
+      window.removeEventListener('resize',             onResize)
+      window.removeEventListener('scrolltotop',        onScrollToTop)
+      window.removeEventListener('navigatepastabout',  onNavigatePastAbout)
     }
   }, [])
 
