@@ -82,7 +82,11 @@ export default function Navbar() {
   const BELOW_ABOUT = new Set(['events', 'details'])
   function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, id: string) {
     close()
-    if (BELOW_ABOUT.has(id)) {
+    if (id === 'home') {
+      e.preventDefault()
+      window.dispatchEvent(new CustomEvent('scrolltotop'))
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else if (BELOW_ABOUT.has(id)) {
       e.preventDefault()
       window.dispatchEvent(new CustomEvent('navigatepastabout', { detail: { targetId: id } }))
     }
