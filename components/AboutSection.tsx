@@ -115,7 +115,18 @@ export default function AboutSection() {
 
     // ── Activation: section top reaching navbar (scroll down) or
     //               section bottom re-entering viewport (scroll up) ────────────
+    // suppressScrollToTop: blocks re-activation while the scroll-to-top button's
+    // smooth scroll is in flight. Clears once scrollY reaches the top.
+    let suppressScrollToTop = false
+    let suppressTimer = 0
+
     const onScroll = () => {
+      // Clear suppression once we've actually reached the top
+      if (suppressScrollToTop) {
+        if (window.scrollY < 10) suppressScrollToTop = false
+        return
+      }
+
       const r    = section.getBoundingClientRect()
       const navH = getNavH()
       const vh   = window.innerHeight
@@ -164,13 +175,18 @@ export default function AboutSection() {
     }
 
     // ── Scroll-to-top button ──────────────────────────────────────────────────
-    // Reset animation so the smooth scroll isn't hijacked as it passes through.
+    // Reset animation and suppress re-activation for the duration of the smooth
+    // scroll. The suppress clears in onScroll once scrollY < 10, with a 2s
+    // fallback in case the scroll is interrupted before reaching the top.
     const onScrollToTop = () => {
       unlock()
-      phaseRef.current = 'idle'
-      accRef.current   = 0
+      phaseRef.current     = 'idle'
+      accRef.current       = 0
+      suppressScrollToTop  = true
       setVisibleWords(0)
       setShowExpl(false)
+      clearTimeout(suppressTimer)
+      suppressTimer = window.setTimeout(() => { suppressScrollToTop = false }, 2000)
     }
 
     window.addEventListener('scroll',      onScroll,      { passive: true })
@@ -183,6 +199,7 @@ export default function AboutSection() {
     return () => {
       unlock()
       clearTimeout(resizeTimer)
+      clearTimeout(suppressTimer)
       window.removeEventListener('scroll',      onScroll)
       window.removeEventListener('wheel',       onWheel)
       window.removeEventListener('touchstart',  onTouchStart)
