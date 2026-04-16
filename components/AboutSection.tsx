@@ -8,11 +8,11 @@ const WORDS = (
 ).split(' ')
 
 // Scroll-equivalent pixels to reveal one word
-const PX_PER_WORD = 55
+const PX_PER_WORD = 35
 // Extra scroll held after last word before explanation fades in
-const EXPLANATION_HOLD = 120
+const EXPLANATION_HOLD = 70
 // Extra scroll after explanation before releasing the lock
-const RELEASE_HOLD = 200
+const RELEASE_HOLD = 115
 
 const TOTAL_PX = WORDS.length * PX_PER_WORD + EXPLANATION_HOLD + RELEASE_HOLD
 
