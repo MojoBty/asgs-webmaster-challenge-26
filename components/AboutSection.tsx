@@ -176,12 +176,26 @@ export default function AboutSection() {
 
     // ── Nav link to section below "about" ────────────────────────────────────
     // Auto-plays the animation at speed then scrolls to the target section.
+    const scrollToTarget = (targetId: string) => {
+      const el = document.getElementById(targetId)
+      if (!el) return
+      // scrollIntoView can be cancelled on iOS by a preceding window.scrollTo call,
+      // so use window.scrollTo directly. On desktop the navbar is fixed so subtract
+      // its height; on mobile it scrolls with the page so no offset needed.
+      const offset = window.innerWidth >= 1024 ? getNavH() : 0
+      const top    = el.getBoundingClientRect().top + window.scrollY - offset
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+
     const onNavigatePastAbout = (e: Event) => {
       const { targetId } = (e as CustomEvent<{ targetId: string }>).detail
 
-      // If already done, just scroll to target
-      if (phaseRef.current === 'done') {
-        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
+      // Already done (or fully revealed mid re-entry) — just scroll to target
+      if (phaseRef.current === 'done' ||
+          (phaseRef.current === 'active' && accRef.current >= TOTAL_PX)) {
+        phaseRef.current = 'done'
+        unlock()
+        scrollToTarget(targetId)
         return
       }
 
@@ -192,7 +206,9 @@ export default function AboutSection() {
         lockAt(section.offsetTop - getNavH())
       }
 
-      // rAF loop: animate acc → TOTAL_PX over ~600ms, then navigate
+      // rAF loop: animate acc → TOTAL_PX over ~600ms, then navigate.
+      // window.scrollTo pin is only called while t < 1 so it doesn't
+      // cancel the final scrollToTarget call on iOS.
       const startAcc  = accRef.current
       const startTime = performance.now()
       const DURATION  = 600
@@ -204,13 +220,12 @@ export default function AboutSection() {
         const newAcc = startAcc + (TOTAL_PX - startAcc) * eased
 
         accRef.current = newAcc
-        window.scrollTo(0, lockedYRef.current)
-
         const wordCount = Math.min(WORDS.length, Math.floor(newAcc / PX_PER_WORD))
         setVisibleWords(wordCount)
         setShowExpl(newAcc >= WORDS.length * PX_PER_WORD + EXPLANATION_HOLD)
 
         if (t < 1) {
+          window.scrollTo(0, lockedYRef.current) // pin only while animating
           requestAnimationFrame(tick)
         } else {
           phaseRef.current = 'done'
@@ -218,7 +233,7 @@ export default function AboutSection() {
           setVisibleWords(WORDS.length)
           setShowExpl(true)
           unlock()
-          document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
+          scrollToTarget(targetId)
         }
       }
 
