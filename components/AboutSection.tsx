@@ -164,6 +164,7 @@ export default function AboutSection() {
     let suppressToTop = false
     let suppressNav   = false
     let suppressTimer = 0
+    let lastScrollY   = window.scrollY
     const setSuppressNav = (ms: number) => {
       suppressNav = true
       clearTimeout(suppressTimer)
@@ -171,6 +172,11 @@ export default function AboutSection() {
     }
 
     const onScroll = () => {
+      const currentY    = window.scrollY
+      const scrollingUp = currentY < lastScrollY
+      const scrollingDown = currentY > lastScrollY
+      lastScrollY = currentY
+
       if (suppressToTop) {
         if (window.scrollY < 10) suppressToTop = false
         return
@@ -182,7 +188,7 @@ export default function AboutSection() {
       const vh   = window.innerHeight
 
       // Scroll DOWN: section top reaches the navbar
-      if (phaseRef.current === 'idle' && r.top <= navH + 60 && r.bottom > navH + 100) {
+      if (scrollingDown && phaseRef.current === 'idle' && r.top <= navH + 60 && r.bottom > navH + 100) {
         phaseRef.current = 'active'
         accRef.current   = 0
         lockAt(section.offsetTop - navH)
@@ -194,7 +200,7 @@ export default function AboutSection() {
       // so fast-scroll overshoot can't cause the locked-Y to be in a bad spot.
       // Lower bound (> vh - 100) prevents this from firing when the section is
       // already sitting at the top of the viewport after the forward animation.
-      if (phaseRef.current === 'done' && r.bottom > vh - 100 && r.bottom <= vh + 80) {
+      if (scrollingUp && phaseRef.current === 'done' && r.bottom > vh - 100 && r.bottom <= vh + 80) {
         phaseRef.current = 'active'
         accRef.current   = TOTAL_PX
         lockAt(Math.max(0, section.offsetTop + section.offsetHeight - vh))
