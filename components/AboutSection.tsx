@@ -328,7 +328,7 @@ export default function AboutSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="pt-[80px] pb-[50px] px-5 md:pt-[120px] md:pb-[80px] md:px-[72px] lg:pt-[140px] lg:pb-[100px] lg:px-[120px] text-center bg-bg-warm lg:scroll-mt-[84px]"
+      className="pt-[130px] pb-[75px] px-5 md:pt-[170px] md:pb-[100px] md:px-[72px] lg:pt-[200px] lg:pb-[130px] lg:px-[120px] text-center bg-bg-warm lg:scroll-mt-[84px] overflow-hidden"
     >
       <div className="max-w-[1200px] mx-auto">
         <h2 className="sr-only">About Bear Garden</h2>
