@@ -141,11 +141,16 @@ export default function AboutSection() {
     }
 
     // ── Resize / orientation change ───────────────────────────────────────────
-    // Viewport dimensions shift on rotation, which can re-trigger the scroll-up
-    // activation condition with stale lock coordinates. Always unlock immediately
-    // and reset mid-animation state so the animation can re-activate cleanly.
+    // Only reset on width changes (rotation / desktop resize). Height-only changes
+    // are the mobile browser chrome collapsing on scroll — resetting there would
+    // kill the animation mid-swipe.
+    let prevWidth  = window.innerWidth
     let resizeTimer = 0
     const onResize = () => {
+      const newWidth = window.innerWidth
+      if (newWidth === prevWidth) return  // height-only change, ignore
+      prevWidth = newWidth
+
       unlock()
       clearTimeout(resizeTimer)
       resizeTimer = window.setTimeout(() => {
