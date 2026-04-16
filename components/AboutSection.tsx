@@ -110,7 +110,7 @@ export default function AboutSection() {
       e.preventDefault()
       const dy = touchYRef.current - e.touches[0].clientY
       touchYRef.current = e.touches[0].clientY
-      advance(dy)
+      advance(dy * 2)
     }
 
     // ── Activation: section top reaching navbar (scroll down) or
@@ -163,20 +163,32 @@ export default function AboutSection() {
       }, 250)
     }
 
-    window.addEventListener('scroll',     onScroll,     { passive: true })
-    window.addEventListener('wheel',      onWheel,      { passive: false })
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove',  onTouchMove,  { passive: false })
-    window.addEventListener('resize',     onResize)
+    // ── Scroll-to-top button ──────────────────────────────────────────────────
+    // Reset animation so the smooth scroll isn't hijacked as it passes through.
+    const onScrollToTop = () => {
+      unlock()
+      phaseRef.current = 'idle'
+      accRef.current   = 0
+      setVisibleWords(0)
+      setShowExpl(false)
+    }
+
+    window.addEventListener('scroll',      onScroll,      { passive: true })
+    window.addEventListener('wheel',       onWheel,       { passive: false })
+    window.addEventListener('touchstart',  onTouchStart,  { passive: true })
+    window.addEventListener('touchmove',   onTouchMove,   { passive: false })
+    window.addEventListener('resize',      onResize)
+    window.addEventListener('scrolltotop', onScrollToTop)
 
     return () => {
       unlock()
       clearTimeout(resizeTimer)
-      window.removeEventListener('scroll',     onScroll)
-      window.removeEventListener('wheel',      onWheel)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove',  onTouchMove)
-      window.removeEventListener('resize',     onResize)
+      window.removeEventListener('scroll',      onScroll)
+      window.removeEventListener('wheel',       onWheel)
+      window.removeEventListener('touchstart',  onTouchStart)
+      window.removeEventListener('touchmove',   onTouchMove)
+      window.removeEventListener('resize',      onResize)
+      window.removeEventListener('scrolltotop', onScrollToTop)
     }
   }, [])
 

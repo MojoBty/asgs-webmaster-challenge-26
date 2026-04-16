@@ -20,7 +20,10 @@ export default function ScrollToTop() {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={() => {
+        window.dispatchEvent(new CustomEvent('scrolltotop'))
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }}
       aria-label="Scroll to top"
       style={{ right: 'max(20px, calc(env(safe-area-inset-right) + 12px))' }}
       className={cn(
