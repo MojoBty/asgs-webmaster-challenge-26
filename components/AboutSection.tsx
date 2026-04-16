@@ -75,12 +75,15 @@ export default function AboutSection() {
       }
 
       if (next > TOTAL_PX) {
-        // Scrolled down past the end — release lock, let page scroll down normally
+        // Scrolled down past the end — release lock, let page scroll down normally.
+        // Short suppress prevents the scroll-up condition from immediately
+        // re-firing when coming down from a re-entry lock position (r.bottom ≈ vh).
         phaseRef.current = 'done'
         accRef.current   = TOTAL_PX
         setVisibleWords(WORDS.length)
         setShowExpl(true)
         unlock()
+        setSuppressNav(600)
         return
       }
 
@@ -115,19 +118,29 @@ export default function AboutSection() {
 
     // ── Activation: section top reaching navbar (scroll down) or
     //               section bottom re-entering viewport (scroll up) ────────────
-    // suppressActivation: blocks re-activation during any programmatic scroll
-    // (scroll-to-top button, nav-link navigation). Timer-based; 2 s covers any
-    // smooth-scroll duration on any device.
-    let suppressActivation = false
+    //
+    // Two suppress flags with different lifetimes:
+    //   suppressToTop — set on scroll-to-top click; clears once scrollY < 10
+    //                   (prevents scroll-DOWN activation as the smooth scroll
+    //                    passes through the section on the way up)
+    //   suppressNav   — timer-based (2 s for nav links, 600 ms for scroll-down
+    //                    completion from a re-entry); prevents scroll-UP
+    //                    re-activation while a programmatic scroll is in flight
+    let suppressToTop = false
+    let suppressNav   = false
     let suppressTimer = 0
-    const setSuppress = (ms: number) => {
-      suppressActivation = true
+    const setSuppressNav = (ms: number) => {
+      suppressNav = true
       clearTimeout(suppressTimer)
-      suppressTimer = window.setTimeout(() => { suppressActivation = false }, ms)
+      suppressTimer = window.setTimeout(() => { suppressNav = false }, ms)
     }
 
     const onScroll = () => {
-      if (suppressActivation) return
+      if (suppressToTop) {
+        if (window.scrollY < 10) suppressToTop = false
+        return
+      }
+      if (suppressNav) return
 
       const r    = section.getBoundingClientRect()
       const navH = getNavH()
@@ -181,12 +194,8 @@ export default function AboutSection() {
     const scrollToTarget = (targetId: string) => {
       const el = document.getElementById(targetId)
       if (!el) return
-      // Suppress re-activation for the duration of the smooth scroll so the
-      // about section passing through the viewport doesn't hijack navigation.
-      setSuppress(2000)
-      // Use window.scrollTo directly (scrollIntoView can be cancelled on iOS
-      // by a preceding window.scrollTo call). On desktop the navbar is fixed
-      // so subtract its height; on mobile it scrolls with the page.
+      // Suppress re-activation for the full duration of the smooth scroll.
+      setSuppressNav(2000)
       const offset = window.innerWidth >= 1024 ? getNavH() : 0
       const top    = el.getBoundingClientRect().top + window.scrollY - offset
       window.scrollTo({ top, behavior: 'smooth' })
@@ -255,7 +264,7 @@ export default function AboutSection() {
       accRef.current   = 0
       setVisibleWords(0)
       setShowExpl(false)
-      setSuppress(2000)
+      suppressToTop = true   // clears in onScroll once scrollY < 10
     }
 
     window.addEventListener('scroll',             onScroll,             { passive: true })
